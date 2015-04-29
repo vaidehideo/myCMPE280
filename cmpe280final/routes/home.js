@@ -91,6 +91,7 @@ function highmap(req,res) {
 	   }
    });
 }
+
 function chart(req,res) {
 
 	ejs.renderFile('./views/chart.ejs',function(err, result) {
@@ -308,7 +309,7 @@ function highmapdata(req,res)
 	
 	mysql.fetchData(function(err,results){
 		if(err){
-			throw err;
+				res.end('An error occurred');;
 			}
 		else 
 		{
@@ -330,6 +331,33 @@ function vnvchart(req,res){
 	   });
 }
 
+function getvnv(req,res)
+{
+	var getveg="select count(*) as veg from orderinfo where vegnv='v'";
+	console.log("Query is:"+getveg);
+	
+	mysql.fetchData(function(err,Vegresults){
+		if(err){
+			throw err;
+			}
+		else 
+		{
+			var getnv="select count(*) as nveg from orderinfo where vegnv='nv'";
+			console.log("Query is:"+getnv);
+			
+			mysql.fetchData(function(err,NVegresults){
+				if(err){
+						res.end('An error occurred');
+					}
+				else 
+				{
+					res.send({"Veg":JSON.stringify(Vegresults), "NVeg":JSON.stringify(NVegresults)});
+				}
+			},getnv);
+		}
+	},getveg);
+}
+
 
 exports.signin=signin;
 exports.afterSignIn=afterSignIn;
@@ -342,3 +370,4 @@ exports.getData=getData;
 exports.toppingData=toppingData;
 exports.highmapdata=highmapdata;
 exports.vnvchart=vnvchart;
+exports.getvnv=getvnv;

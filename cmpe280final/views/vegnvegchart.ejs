@@ -100,7 +100,7 @@
                       </a>                                         
                   </li>
                   <li>                     
-                      <a class="" href="" ng-click="vnvscharts()">
+                      <a class="" href="" ng-click="vnvcharts()">
                           <i class="icon_piechart"></i>
                           <span>Veg Non-Veg Comparison</span>                          
                       </a>                                         
@@ -140,8 +140,9 @@
    <!--  <script src="js/jquery-1.8.3.min.js"></script> -->
     <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/highcharts-3d.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <!-- bootstrap -->
@@ -157,50 +158,39 @@
 		
 			    //$(document).ready(function () {
 			    function toppingfunction(tarray){
-			    	//console.log("1" + tarray);
-			    	var toppingArray= new Array();
-			    	for(i=1;i<tarray.length;i++)
-			    		toppingArray[i-1]=tarray[i];
-					//var toppingArray = tarray;
-					//console.log("2" + toppingArray);
-					/*[
-			                    ['Firefox',   20],
-			                    ['IE',       3],
-			                    ['Chrome', 2],
-			                    ['Safari',    5],
-			                    ['Opera',     6.2],
-			                    ['Others',   0.7]
-			                ];
-			                */
-			        // Build the chart
-			        $('#container1').highcharts({
-			            chart: {
-			                plotBackgroundColor: null,
-			                plotBorderWidth: null,
-			                plotShadow: false
-			            },
-			            title: {
-			                text: 'Popular pizza toppings of Pizzalelopizza store'
-			            },
-			            tooltip: {
-			                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			            },
-			            plotOptions: {
-			                pie: {
-			                    allowPointSelect: true,
-			                    cursor: 'pointer',
-			                    dataLabels: {
-			                        enabled: false
-			                    },
-			                    showInLegend: true
-			                }
-			            },
-			            series: [{
-			                type: 'pie',
-			                name: 'Popular Toppings',
-			                data: toppingArray
-			            }]
-			        });
+			    	$('#container1').highcharts({
+				        chart: {
+				            type: 'column',
+				            margin: 75,
+				            options3d: {
+				                enabled: true,
+				                alpha: 10,
+				                beta: 25,
+				                depth: 70
+				            }
+				        },
+				        title: {
+				            text: 'Veg vs Non-Veg'
+				        },
+				        
+				        plotOptions: {
+				            column: {
+				                depth: 100
+				            }
+				        },
+				        xAxis: {
+				            categories: ['Veg', 'NVeg']
+				        },
+				        yAxis: {
+				            title: {
+				                text: null
+				            }
+				        },
+				        series: [{
+				            name: 'Veg vs NonVeg',
+				            data: tarray
+				        }]
+				    });
 			    }
 		
 			//});
@@ -212,35 +202,16 @@
 				//alert("hi2");
 		    	$http({
 		    		method: 'Get',
-		            url: '/getToppingsData',
+		            url: '/getVegNVData',
 		         }).success(function(response){
-		         		var jsononions = JSON.parse(response.Onions);
-		         		var jsonmush = JSON.parse(response.Mushrooms);
-		         		var jsonpop = JSON.parse(response.Pepperoni);
-		         		var jsonham = JSON.parse(response.Ham);
-		         		var jsonbac = JSON.parse(response.Bacon);
-		         		var jsonpin = JSON.parse(response.Pineapple);
-		         		var jsonoli = JSON.parse(response.Olives);
-		         		var jsontom = JSON.parse(response.Tomatoes);
-		         		var jsonjal = JSON.parse(response.Jalapeno);
-		         		var jsonGP = JSON.parse(response.GreenPeppers);
-		         		var jsonches = JSON.parse(response.Cheese);
-		         		//console.log(jsononions);
-		         		//console.log(jsonham);
-		         		var arr = [['Ingredients','Quantity']];
-		         		arr.push(['Onions',jsononions[0].Onions]);
-		         		arr.push(['Mushrooms',jsonmush[0].Mushrooms]);
-		         		arr.push(['Pepperoni',jsonpop[0].Pepperoni]);
-		         		arr.push(['Ham',jsonham[0].Ham]);
-		         		arr.push(['Bacon',jsonbac[0].Bacon]);
-		         		arr.push(['Pineapple',jsonpin[0].Pineapple]);
-		         		arr.push(['Olives',jsonoli[0].Olives]);
-		         		arr.push(['Tomatoes',jsontom[0].Tomatoes]);
-		         		arr.push(['Jalapeno',jsonjal[0].Jalapeno]);
-		         		arr.push(['GreenPeppers',jsonGP[0].GreenPeppers]);
-		         		arr.push(['Cheese',jsonches[0].Cheese]);
-		         		//console.log(arr[3]);
-		         		//$scope.tarray = arr;
+		         		//var arr = [2,3];
+		         		//console.log(JSON.parse(response.Veg));
+		         		//console.log(JSON.parse(response.NVeg));
+		         		var jsonv = JSON.parse(response.Veg);
+		         		var jsonnv = JSON.parse(response.NVeg);
+		         		var arr = [jsonv[0].veg];
+		         		arr[1]= jsonnv[0].nveg;
+		         		//console.log("arr"+arr+jsonnv[0].nveg);
 		         		toppingfunction(arr);
 		            }).error(function(error){
 		            alert("error");
@@ -303,19 +274,6 @@
 					        });
 					};
 					
-			$scope.toppingscharts = function() {
-				$http({
-				  	url: '/populartoppingsdata', 
-				  	method: "GET",
-				 	}).success(function(response){
-					           
-					            //alert(JSON.stringify(response));
-					            window.location = '/populartoppings';
-					          
-					        }).error(function(error){
-					            alert("error");
-					        });
-					};
 					
 			$scope.dashboard = function() {
 				$http({

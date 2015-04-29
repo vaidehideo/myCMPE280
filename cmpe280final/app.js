@@ -40,6 +40,7 @@ app.get('/signout', home.signout);
 app.get('/highmap', home.highmap);
 app.get('/highmapdata', home.highmapdata);
 app.get('/vegnonvegchart', home.vnvchart);
+app.get('/getVegNVData', home.getvnv);
 app.get('/populartoppings', home.populartoppings);
 
 http.createServer(app).listen(app.get('port'), function(){

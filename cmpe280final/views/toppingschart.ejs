@@ -100,7 +100,7 @@
                       </a>                                         
                   </li>
                   <li>                     
-                      <a class="" href="" ng-click="vnvscharts()">
+                      <a class="" href="" ng-click="vnvcharts()">
                           <i class="icon_piechart"></i>
                           <span>Veg Non-Veg Comparison</span>                          
                       </a>                                         
@@ -303,19 +303,6 @@
 					        });
 					};
 					
-			$scope.toppingscharts = function() {
-				$http({
-				  	url: '/populartoppingsdata', 
-				  	method: "GET",
-				 	}).success(function(response){
-					           
-					            //alert(JSON.stringify(response));
-					            window.location = '/populartoppings';
-					          
-					        }).error(function(error){
-					            alert("error");
-					        });
-					};
 					
 			$scope.dashboard = function() {
 				$http({
