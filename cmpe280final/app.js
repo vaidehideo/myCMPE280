@@ -27,8 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-app.get('/', routes.index);
-app.get('/index', routes.index);
+
+app.get('/admin', routes.admin);
 //app.post('/insertUser', home.insertUser);
 //app.get('/successInsert', home.successInsert);
 app.get('/signin', home.signin);
@@ -40,6 +40,8 @@ app.get('/signout', home.signout);
 app.get('/highmap', home.highmap);
 app.get('/highmapdata', home.highmapdata);
 app.get('/vegnonvegchart', home.vnvchart);
+app.get('/crustchart', home.crustchart);
+app.get('/getcrustData', home.crustdata);
 app.get('/getVegNVData', home.getvnv);
 app.get('/populartoppings', home.populartoppings);
 

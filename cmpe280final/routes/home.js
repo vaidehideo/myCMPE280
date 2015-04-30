@@ -3,7 +3,8 @@ var mysql = require('./mysql');
 
 function signin(req,res) {
 
-	ejs.renderFile('./views/login.ejs',function(err, result) {
+	 res.render('login');
+	/*ejs.renderFile('./views/login.ejs',function(err, result) {
 	   // render on success
 	   if (!err) {
 	            res.end(result);
@@ -14,7 +15,7 @@ function signin(req,res) {
 	            console.log(err);
 	   }
    });
-}
+*/}
 
 
 function afterSignIn(req,res)
@@ -49,7 +50,8 @@ function afterSignIn(req,res)
 
 function dashboard(req,res) {
 
-	ejs.renderFile('./views/index2.ejs',function(err, result) {
+	res.render('index2');
+	/*ejs.renderFile('./views/index2.ejs',function(err, result) {
 	   // render on success
 	   if (!err) {
 	            res.end(result);
@@ -59,12 +61,13 @@ function dashboard(req,res) {
 	            res.end('An error occurred');
 	            console.log(err);
 	   }
-   });
+   });*/
 }
 
 function signout(req,res) {
 
-	ejs.renderFile('./views/login.ejs',function(err, result) {
+	res.render('login');
+	/*ejs.renderFile('./views/login.ejs',function(err, result) {
 	   // render on success
 	   if (!err) {
 	            res.end(result);
@@ -74,12 +77,13 @@ function signout(req,res) {
 	            res.end('An error occurred');
 	            console.log(err);
 	   }
-   });
+   });*/
 }
 
 function highmap(req,res) {
 
-	ejs.renderFile('./views/highmap.ejs',function(err, result) {
+	res.render('highmap');
+	/*ejs.renderFile('./views/highmap.ejs',function(err, result) {
 	   // render on success
 	   if (!err) {
 	            res.end(result);
@@ -89,26 +93,13 @@ function highmap(req,res) {
 	            res.end('An error occurred');
 	            console.log(err);
 	   }
-   });
+   });*/
 }
 
-function chart(req,res) {
-
-	ejs.renderFile('./views/chart.ejs',function(err, result) {
-	   // render on success
-	   if (!err) {
-	            res.end(result);
-	   }
-	   // render or error
-	   else {
-	            res.end('An error occurred');
-	            console.log(err);
-	   }
-   });
-}
 function populartoppings(req,res) {
 
-	ejs.renderFile('./views/toppingschart.ejs',function(err, result) {
+	res.render('toppingschart');
+	/*ejs.renderFile('./views/toppingschart.ejs',function(err, result) {
 	   // render on success
 	   if (!err) {
 	            res.end(result);
@@ -118,7 +109,7 @@ function populartoppings(req,res) {
 	            res.end('An error occurred');
 	            console.log(err);
 	   }
-   });
+   });*/
 }
 
 function getData(req,res)
@@ -317,8 +308,10 @@ function highmapdata(req,res)
 		}
 	},getmapdata);
 }
+
 function vnvchart(req,res){
-	ejs.renderFile('./views/vegnvegchart.ejs',function(err, result) {
+	res.render('vegnvegchart');
+	/*ejs.renderFile('./views/vegnvegchart.ejs',function(err, result) {
 		   // render on success
 		   if (!err) {
 		            res.end(result);
@@ -328,7 +321,22 @@ function vnvchart(req,res){
 		            res.end('An error occurred');
 		            console.log(err);
 		   }
-	   });
+	   });*/
+}
+
+function crustchart(req,res){
+	res.render('crustchart');
+	/*ejs.renderFile('./views/crustchart.ejs',function(err, result) {
+		   // render on success
+		   if (!err) {
+		            res.end(result);
+		   }
+		   // render or error
+		   else {
+		            res.end('An error occurred');
+		            console.log(err);
+		   }
+	   });*/
 }
 
 function getvnv(req,res)
@@ -358,6 +366,33 @@ function getvnv(req,res)
 	},getveg);
 }
 
+function crustdata(req,res)
+{
+	var getveg="select distinct crust, count(*) as count from orderinfo where vegnv='v' group by crust";
+	console.log("Query is:"+getveg);
+	
+	mysql.fetchData(function(err,Vegresults){
+		if(err){
+			throw err;
+			}
+		else 
+		{
+			var getnv="select distinct crust, count(*) as count from orderinfo where vegnv='nv' group by crust";
+			console.log("Query is:"+getnv);
+			
+			mysql.fetchData(function(err,NVegresults){
+				if(err){
+						res.end('An error occurred');
+					}
+				else 
+				{
+					res.send({"Vegcrust":JSON.stringify(Vegresults), "NVegcrust":JSON.stringify(NVegresults)});
+				}
+			},getnv);
+		}
+	},getveg);
+}
+
 
 exports.signin=signin;
 exports.afterSignIn=afterSignIn;
@@ -371,3 +406,5 @@ exports.toppingData=toppingData;
 exports.highmapdata=highmapdata;
 exports.vnvchart=vnvchart;
 exports.getvnv=getvnv;
+exports.crustchart=crustchart;
+exports.crustdata=crustdata;

@@ -8,7 +8,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Pizza, Analytics, Food, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Popular Toppings</title>
+    <title>Crust Popularity</title>
     
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -146,7 +146,7 @@
    <!--  <script src="js/jquery-1.8.3.min.js"></script> -->
     <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 
@@ -162,51 +162,67 @@
   				//$(function () {
 		
 			    //$(document).ready(function () {
-			    function toppingfunction(tarray){
-			    	//console.log("1" + tarray);
-			    	var toppingArray= new Array();
-			    	for(i=1;i<tarray.length;i++)
-			    		toppingArray[i-1]=tarray[i];
-					//var toppingArray = tarray;
-					//console.log("2" + toppingArray);
-					/*[
-			                    ['Firefox',   20],
-			                    ['IE',       3],
-			                    ['Chrome', 2],
-			                    ['Safari',    5],
-			                    ['Opera',     6.2],
-			                    ['Others',   0.7]
-			                ];
-			                */
-			        // Build the chart
-			        $('#container1').highcharts({
-			            chart: {
-			                plotBackgroundColor: null,
-			                plotBorderWidth: null,
-			                plotShadow: false
-			            },
-			            title: {
-			                text: 'Popular pizza toppings of Pizzalelopizza store'
-			            },
-			            tooltip: {
-			                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			            },
-			            plotOptions: {
-			                pie: {
-			                    allowPointSelect: true,
-			                    cursor: 'pointer',
-			                    dataLabels: {
-			                        enabled: false
-			                    },
-			                    showInLegend: true
+			    function toppingfunction(tarray1, tarray2){
+			    	var avg = new Array();
+			    	for(var i=0;i <tarray1.length; i++)
+			    	{
+			    		avg[i] = (tarray1[i] + tarray2[i])/2;
+			    	}
+			    	console.log(avg);
+			    	$('#container1').highcharts({
+			        title: {
+			            text: 'Crust Combination chart'
+			        },
+			        xAxis: {
+			            categories: ['Pan Pizza', 'Thin & Crispy', 'Hand Tossed', 'Cheesy Crust']
+			        },
+			        labels: {
+			            items: [{
+			                html: 'Veg-NonVeg Data',
+			                style: {
+			                    left: '50px',
+			                    top: '18px',
+			                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
 			                }
-			            },
-			            series: [{
-			                type: 'pie',
-			                name: 'Popular Toppings',
-			                data: toppingArray
 			            }]
-			        });
+			        },
+			        series: [{
+			            type: 'column',
+			            name: 'Veg',
+			            data: tarray1
+			        }, {
+			            type: 'column',
+			            name: 'Non-Veg',
+			            data: tarray2
+			        },  {
+			            type: 'spline',
+			            name: 'Average',
+			            data: [3, 2.67, 3, 6.33],
+			            marker: {
+			                lineWidth: 2,
+			                lineColor: Highcharts.getOptions().colors[3],
+			                fillColor: 'white'
+			            }
+			        }, {
+			            type: 'pie',
+			            name: 'Total Consumption',
+			            data: [{
+			                name: 'Veg',
+			                y: 13,
+			                color: Highcharts.getOptions().colors[0] // Jane's color
+			            }, {
+			                name: 'Non-Veg',
+			                y: 23,
+			                color: Highcharts.getOptions().colors[1] // John's color
+			            }, ],
+			            center: [100, 80],
+			            size: 100,
+			            showInLegend: false,
+			            dataLabels: {
+			                enabled: false
+			            }
+			        }]
+			    });
 			    }
 		
 			//});
@@ -218,36 +234,40 @@
 				//alert("hi2");
 		    	$http({
 		    		method: 'Get',
-		            url: '/getToppingsData',
+		            url: '/getcrustData',
 		         }).success(function(response){
-		         		var jsononions = JSON.parse(response.Onions);
-		         		var jsonmush = JSON.parse(response.Mushrooms);
-		         		var jsonpop = JSON.parse(response.Pepperoni);
-		         		var jsonham = JSON.parse(response.Ham);
-		         		var jsonbac = JSON.parse(response.Bacon);
-		         		var jsonpin = JSON.parse(response.Pineapple);
-		         		var jsonoli = JSON.parse(response.Olives);
-		         		var jsontom = JSON.parse(response.Tomatoes);
-		         		var jsonjal = JSON.parse(response.Jalapeno);
-		         		var jsonGP = JSON.parse(response.GreenPeppers);
-		         		var jsonches = JSON.parse(response.Cheese);
-		         		//console.log(jsononions);
-		         		//console.log(jsonham);
-		         		var arr = [['Ingredients','Quantity']];
-		         		arr.push(['Onions',jsononions[0].Onions]);
-		         		arr.push(['Mushrooms',jsonmush[0].Mushrooms]);
-		         		arr.push(['Pepperoni',jsonpop[0].Pepperoni]);
-		         		arr.push(['Ham',jsonham[0].Ham]);
-		         		arr.push(['Bacon',jsonbac[0].Bacon]);
-		         		arr.push(['Pineapple',jsonpin[0].Pineapple]);
-		         		arr.push(['Olives',jsonoli[0].Olives]);
-		         		arr.push(['Tomatoes',jsontom[0].Tomatoes]);
-		         		arr.push(['Jalapeno',jsonjal[0].Jalapeno]);
-		         		arr.push(['GreenPeppers',jsonGP[0].GreenPeppers]);
-		         		arr.push(['Cheese',jsonches[0].Cheese]);
-		         		//console.log(arr[3]);
-		         		//$scope.tarray = arr;
-		         		toppingfunction(arr);
+		         		//console.log(JSON.parse(response.Vegcrust));
+		         		//console.log(JSON.parse(response.NVegcrust));
+		         		var jsonveg = JSON.parse(response.Vegcrust);
+		         		var jsonnveg = JSON.parse(response.NVegcrust);
+		         		//var jsononions = JSON.parse(response.Onions);
+		         		//console.log("arr"+arr+jsonnv[0].nveg);
+		         		var arr1 = [0,0,0,0];
+		         		for(var i=0; i< jsonveg.length; i++)
+		         		{
+		         			if(jsonveg[i].crust == 'PanPizza')
+		         				arr1[0] = jsonveg[i].count;
+		         			else if(jsonveg[i].crust == 'ThinCrispy')
+		         				arr1[1] = jsonveg[i].count;
+		         			else if(jsonveg[i].crust == 'HandTossed')
+		         				arr1[2] = jsonveg[i].count;
+		         			else if(jsonveg[i].crust == 'CheesyCrust')
+		         				arr1[3] = jsonveg[i].count;
+		         		}
+		         		var arr2 = [0,0,0,0];
+		         		for(var i=0; i< jsonnveg.length; i++)
+		         		{
+		         			if(jsonnveg[i].crust == 'PanPizza')
+		         				arr2[0] = jsonnveg[i].count;
+		         			else if(jsonnveg[i].crust == 'ThinCrispy')
+		         				arr2[1] = jsonnveg[i].count;
+		         			else if(jsonnveg[i].crust == 'HandTossed')
+		         				arr2[2] = jsonnveg[i].count;
+		         			else if(jsonnveg[i].crust == 'CheesyCrust')
+		         				arr2[3] = jsonnveg[i].count;
+		         		}
+		         		//console.log(arr1 + " " + arr2);
+		         		toppingfunction(arr1, arr2);
 		            }).error(function(error){
 		            alert("error");
 		        });
@@ -281,6 +301,20 @@
 					        });
 					};
 					
+			$scope.crustcharts = function() {
+				$http({
+				  	url: '/crustchart', 
+				  	method: "GET",
+				 	}).success(function(response){
+					           
+					            //alert(JSON.stringify(response));
+					            window.location = '/crustchart';
+					          
+					        }).error(function(error){
+					            alert("error");
+					        });
+					};
+					
 			$scope.vnvcharts = function() {
 				$http({
 				  	url: '/vegnonvegchart', 
@@ -293,7 +327,7 @@
 					        }).error(function(error){
 					            alert("error");
 					        });
-					};
+					};					
 					
 			$scope.toppingscharts = function() {
 				$http({
@@ -303,20 +337,6 @@
 					           
 					            //alert(JSON.stringify(response));
 					            window.location = '/populartoppings';
-					          
-					        }).error(function(error){
-					            alert("error");
-					        });
-					};
-					
-			$scope.crustcharts = function() {
-				$http({
-				  	url: '/crustchart', 
-				  	method: "GET",
-				 	}).success(function(response){
-					           
-					            //alert(JSON.stringify(response));
-					            window.location = '/crustchart';
 					          
 					        }).error(function(error){
 					            alert("error");

@@ -102,7 +102,13 @@
                   <li>                     
                       <a class="" href="" ng-click="vnvcharts()">
                           <i class="icon_piechart"></i>
-                          <span>Veg Non-Veg Comparison</span>                          
+                          <span>Veg vs Non-Veg</span>                          
+                      </a>                                         
+                  </li>
+                  <li>                     
+                      <a class="" href="" ng-click="crustcharts()">
+                          <i class="icon_piechart"></i>
+                          <span>Crust Popularity</span>                          
                       </a>                                         
                   </li>
                   <li>                     
@@ -240,6 +246,20 @@
 					           
 					            //alert(JSON.stringify(response));
 					            window.location = '/highmap';
+					          
+					        }).error(function(error){
+					            alert("error");
+					        });
+					};
+					
+			$scope.crustcharts = function() {
+				$http({
+				  	url: '/crustchart', 
+				  	method: "GET",
+				 	}).success(function(response){
+					           
+					            //alert(JSON.stringify(response));
+					            window.location = '/crustchart';
 					          
 					        }).error(function(error){
 					            alert("error");
