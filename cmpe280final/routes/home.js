@@ -399,7 +399,6 @@ exports.afterSignIn=afterSignIn;
 exports.dashboard=dashboard;
 exports.signout=signout;
 exports.highmap=highmap;
-exports.chart=chart;
 exports.populartoppings=populartoppings;
 exports.getData=getData;
 exports.toppingData=toppingData;

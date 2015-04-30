@@ -168,6 +168,16 @@
 			    	{
 			    		avg[i] = (tarray1[i] + tarray2[i])/2;
 			    	}
+			    	var vegtotal=0;
+			    	for(var i=0;i <tarray1.length; i++)
+			    	{
+			    		vegtotal=vegtotal+tarray1[i];
+			    	}
+			    	var nvegtotal=0;
+			    	for(var i=0;i <tarray2.length; i++)
+			    	{
+			    		nvegtotal=nvegtotal+tarray2[i];
+			    	}
 			    	console.log(avg);
 			    	$('#container1').highcharts({
 			        title: {
@@ -197,7 +207,7 @@
 			        },  {
 			            type: 'spline',
 			            name: 'Average',
-			            data: [3, 2.67, 3, 6.33],
+			            data: avg,
 			            marker: {
 			                lineWidth: 2,
 			                lineColor: Highcharts.getOptions().colors[3],
@@ -208,11 +218,11 @@
 			            name: 'Total Consumption',
 			            data: [{
 			                name: 'Veg',
-			                y: 13,
+			                y: vegtotal,
 			                color: Highcharts.getOptions().colors[0] // Jane's color
 			            }, {
 			                name: 'Non-Veg',
-			                y: 23,
+			                y: nvegtotal,
 			                color: Highcharts.getOptions().colors[1] // John's color
 			            }, ],
 			            center: [100, 80],
